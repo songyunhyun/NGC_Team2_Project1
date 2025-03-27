@@ -7,9 +7,9 @@ public class PlayerMovement : MonoBehaviour
 {
     Vector2 _moveDir;
     public float _speed = 15;
-    float _maxSpeed = 2;
+    float _maxSpeed = 15;
     float _jumpPow = 5;
-    float _attackSpeed = 100f;//대쉬 속도
+    float _attackSpeed = 1000f;//대쉬 속도
     public float _attackCoolTime = 2f;//대쉬 쿨타임
     public float _attackCoolDown;//대쉬 남은 쿨타임
     [SerializeField] private Rigidbody2D _rigid;
@@ -47,6 +47,11 @@ public class PlayerMovement : MonoBehaviour
         Vector3 newPos = mousePos - transform.position;
         float rotZ = Mathf.Atan2(newPos.y, newPos.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, rotZ);
+        if (_attackCoolDown <= _attackCoolTime)
+        {
+            _attackCoolDown += Time.deltaTime;
+        }
+            
     }
 
     private void OnMove(InputValue value)
@@ -60,11 +65,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnAttack()
     {
-        Vector2 a = mousePos - transform.position;
-        a.Normalize();
-        print(a.magnitude);
-        _rigid.linearVelocity = new Vector2(0, 0);
-        _rigid.AddForce(a * _attackSpeed);
+        if (_attackCoolDown >= _attackCoolTime)
+        {
+            Vector2 a = mousePos - transform.position;
+            a.Normalize();
+            print(a.magnitude);
+            _rigid.linearVelocity = new Vector2(0, 0);
+            _rigid.AddForce(a * _attackSpeed);
+            _attackCoolDown = 0;
+        }
+        
         
         //_rigid.AddForce(mousePos - transform.position * _attackSpeed);
     }
