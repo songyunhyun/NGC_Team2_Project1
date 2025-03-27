@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 a = mousePos - transform.position;
         a.Normalize();
         print(a.magnitude);
-        _rigid.linearVelocity = new Vector2(0, 0);
+        _rigid.linearVelocity = Vector2.zero;
         _rigid.AddForce(a * _attackSpeed);
         
         //_rigid.AddForce(mousePos - transform.position * _attackSpeed);
