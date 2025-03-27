@@ -1,9 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.iOS;
-using static UnityEngine.GraphicsBuffer;
 
-public class PlayerMovement1 : MonoBehaviour
+public class RWS_PlayerMovement : MonoBehaviour
 {
     Vector2 _moveDir;
     public float _speed = 15;
