@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,7 +8,8 @@ public class RWS_PlayerMovement : MonoBehaviour
     public float _speed = 15;
     float _maxSpeed = 2;
     float _jumpPow = 5;
-    float _attackSpeed = 100f;//대쉬 속도
+    [SerializeField] private float _attackSpeed = 100f;//대쉬 속도
+    [SerializeField] private float _doMoveSpeed;
     public float _attackCoolTime = 2f;//대쉬 쿨타임
     public float _attackCoolDown;//대쉬 남은 쿨타임
     [SerializeField] private Rigidbody2D _rigid;
@@ -62,8 +64,7 @@ public class RWS_PlayerMovement : MonoBehaviour
         a.Normalize();
         print(a.magnitude);
         _rigid.linearVelocity = Vector2.zero;
-        _rigid.AddForce(a * _attackSpeed);
-        
+        _rigid.DOMove(a * _attackSpeed, _doMoveSpeed).SetSpeedBased();
         //_rigid.AddForce(mousePos - transform.position * _attackSpeed);
     }
 }
