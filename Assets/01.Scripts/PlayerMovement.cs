@@ -47,6 +47,11 @@ public class PlayerMovement1 : MonoBehaviour
         Vector3 newPos = mousePos - transform.position;
         float rotZ = Mathf.Atan2(newPos.y, newPos.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, rotZ);
+        if (_attackCoolDown <= _attackCoolTime)
+        {
+            _attackCoolDown += Time.deltaTime;
+        }
+            
     }
 
     private void OnMove(InputValue value)
@@ -60,12 +65,17 @@ public class PlayerMovement1 : MonoBehaviour
 
     private void OnAttack()
     {
-        Vector2 a = mousePos - transform.position;
-        a.Normalize();
-        print(a.magnitude);
-        _rigid.linearVelocity = Vector2.zero;
-        _rigid.AddForce(a * _attackSpeed);
-        
+        if (_attackCoolDown >= _attackCoolTime)
+        {
+            Vector2 a = mousePos - transform.position;
+            a.Normalize();
+            print(a.magnitude);
+            _rigid.linearVelocity = new Vector2(0, 0);
+            _rigid.AddForce(a * _attackSpeed);
+            _attackCoolDown = 0;
+        }
+
+
         //_rigid.AddForce(mousePos - transform.position * _attackSpeed);
     }
 }
